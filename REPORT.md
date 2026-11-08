@@ -6,6 +6,17 @@ Assignment 4 - November 8, 2026
 
 Repository: https://github.com/ravitejaponnekanti/MSCS532_Assignment4
 
+## Overview
+
+This report evaluates an array-based Heapsort implementation and an indexed
+binary-heap priority queue. It connects correctness and complexity analysis
+with measured sorting times and a reproducible scheduling simulation.
+Heapsort provides an O(n log n) time upper bound with O(1) auxiliary space.
+In the measured 8,000-element distinct-key cases, Merge Sort was fastest,
+while randomized Quicksort benefited most from repeated values. In the
+scheduling example, priority dispatch reduced total tardiness from 6 to 3
+time units without reducing the number of missed deadlines.
+
 ## 1 Heapsort design and correctness
 
 `heapsort.py` stores a complete binary tree directly in the input list. For
@@ -41,7 +52,9 @@ sum(h >= 1) O(n*h/2^h) = O(n) * sum(h >= 1) h/2^h = O(n).
 
 The finite geometric derivative sum is bounded by 2. Visiting the internal
 nodes also costs Omega(n), so heap construction is Theta(n), including when
-the input is already a heap (Demaine et al., 2020).
+the input is already a heap (Demaine et al., 2020). Logarithms in this report
+are base two unless otherwise stated; changing the base changes only a
+constant factor in these asymptotic bounds.
 
 Sorting then performs n - 1 extractions. Each costs O(log k) with k active
 elements. Therefore, for every input,
@@ -66,6 +79,20 @@ Building and the n - 1 extraction iterations then take Theta(n), still within
 O(n log n). Already sorted input is not that same special case. Average-case
 Theta(n log n) here refers to uniformly random permutations of distinct keys;
 a different input distribution, such as all-equal arrays, has a different average.
+
+### Heapsort time bounds for this implementation
+
+| Case and input assumption | Tight running time | O(n log n) upper bound |
+|---|---|---|
+| Best case with arbitrary duplicate keys allowed | Theta(n), attained by all-equal input | Holds |
+| Best case restricted to distinct keys | Theta(n log n) | Holds |
+| Average over uniform random permutations of distinct keys | Theta(n log n) | Holds |
+| Worst case | Theta(n log n) | Holds |
+
+The linear duplicate-key best case therefore agrees with the assignment's
+O(n log n) requirement: a linear function is also O(n log n). It would be
+incorrect to replace that upper bound with a tight Theta(n log n) claim for
+every possible duplicate-key input.
 
 Heapsort changes the original list using a fixed number of indices and a
 temporary swap, with iterative sifting. Auxiliary space is O(1); the input
@@ -100,7 +127,7 @@ These are local Python 3.12.14 measurements on Windows 11. Exact platform
 metadata is saved in `environment.json`. No memory profiler affects the timed
 runs; the space discussion is analytical, not a claim of measured total RAM.
 
-### Table 1 Median running times
+### Table 1 Median running times in milliseconds
 
 | Size | Input | Heapsort ms | Quicksort ms | Merge Sort ms |
 |---:|---|---:|---:|---:|
@@ -197,7 +224,10 @@ priority and are not enforced. Context-switch costs, I/O blocking, and
 priority-update events during a running task are outside this model; key
 updates are separately implemented and tested by the queue API.
 
-An FCFS baseline uses the same tasks and durations. The task set is:
+An FCFS baseline uses the same tasks and durations. Arrival, duration,
+deadline, waiting, turnaround, and tardiness are expressed in abstract
+simulation time units, not the milliseconds used in the sorting benchmark.
+Priorities are dimensionless integer ranks. The task set is:
 
 | Task | Priority | Arrival | Duration | Deadline |
 |---|---:|---:|---:|---:|
@@ -229,6 +259,9 @@ first arrival. Empty input has zero metrics.
 | Busy time | 11 | 11 |
 | Elapsed time | 13 | 13 |
 | Utilization | 84.62% | 84.62% |
+
+Waiting, turnaround, tardiness, busy time, and elapsed time use simulation
+time units; deadline misses are counts and utilization is a percentage.
 
 On this task set, priority scheduling halves total tardiness but does not
 reduce the number of missed deadlines. B finishes at 5 after deadline 3 in

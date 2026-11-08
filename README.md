@@ -1,6 +1,6 @@
 # MSCS532 Assignment 4
 
-Heap Data Structures Implementation Analysis and Applications
+Heap Data Structures: Implementation, Analysis, and Applications
 
 Python implementations of in-place Heapsort, an indexed max-priority queue,
 and a nonpreemptive task scheduler, with sorting benchmarks and analysis.
@@ -23,6 +23,17 @@ python benchmark.py
 Heapsort prompts for space-separated integers. Empty input is supported.
 For the local environment, replace `python` with `.\.venv\Scripts\python.exe`.
 Use **Run Python File in Terminal** in VS Code for keyboard input.
+
+Example Heapsort session:
+
+```text
+Enter integers separated by spaces: 8 -3 5 8 1
+Sorted: [-3, 1, 5, 8, 8]
+```
+
+`scheduler.py` runs the same five tasks under priority scheduling and
+first-come, first-served (FCFS), prints their schedules, and writes the
+schedule CSV files and summary JSON. No keyboard input is required.
 
 ## Priority queue example
 
@@ -55,6 +66,10 @@ measurements are specific to this machine and implementation. Heapsort has
 constant auxiliary space and O(n log n) time in every case; its tight best
 case is linear when all keys are equal and sifting stops early.
 
+For distinct keys, its best, average, and worst times are Theta(n log n).
+The priority queue uses O(n) storage; heap repair follows at most O(log n)
+levels. The report explains Python container allocation and index-map costs.
+
 The sample priority schedule reduces total tardiness from 6 to 3 compared
 with FCFS. Both miss two deadlines and have 84.62% utilization. This is
 nonpreemptive fixed-priority scheduling, not a deadline-guaranteed policy.
@@ -77,9 +92,4 @@ nonpreemptive fixed-priority scheduling, not a deadline-guaranteed policy.
 Rerunning the scripts replaces their result files. Update report tables if
 benchmark measurements change.
 
-## Repository and submission
 
-https://github.com/ravitejaponnekanti/MSCS532_Assignment4
-
-Commit and push the code, report, README, and result files before submitting
-the repository link through the course portal.
