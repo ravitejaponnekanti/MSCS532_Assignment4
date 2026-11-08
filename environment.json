@@ -1,0 +1,12 @@
+{
+  "python": "3.12.14",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "sizes": [
+    500,
+    2000,
+    8000
+  ],
+  "repeats": 5,
+  "seed": 532,
+  "note": "Median/min/max wall time. Input copying and validation excluded; algorithm allocations and quicksort RNG construction included."
+}
