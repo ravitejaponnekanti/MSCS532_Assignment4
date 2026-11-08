@@ -89,7 +89,6 @@ nonpreemptive fixed-priority scheduling, not a deadline-guaranteed policy.
   reproducible sample scheduling results.
 - `REPORT.md`: written report for submission.
 
-Rerunning the scripts replaces their result files. Update report tables if
-benchmark measurements change.
+
 
 
